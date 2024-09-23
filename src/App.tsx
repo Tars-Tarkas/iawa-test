@@ -1,24 +1,32 @@
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  redirect,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import FormLogin from "./components/FormLogin";
+import FormLogin from "./pages/FormLogin";
 import ListOfTrips from "./components/ListOfTrips";
-import PageNotFound from "./components/PageNotFound";
+import PageNotFound from "./pages/PageNotFound";
+import TripDetails from "./components/TripDetails";
+import LayoutPage from "./components/LayoutPage";
+import ErrorAuth from "./pages/ErrorAuth";
 
 function App() {
-  const token = localStorage.getItem("token");
   return (
     <div className="App">
       <Routes>
+        <Route element={<LayoutPage />}>
+          <Route
+            path="/"
+            element={<ListOfTrips />}
+            errorElement={<PageNotFound />}
+          />
+          <Route
+            path="/:order_id"
+            element={<TripDetails />}
+            errorElement={<PageNotFound />}
+          />
+        </Route>
         <Route path="*" element={<PageNotFound />} />
-        <Route path="/" element={<ListOfTrips />} />
         <Route path="/login" element={<FormLogin />} />
+        <Route path="/errorauth" element={<ErrorAuth />} />
       </Routes>
     </div>
   );

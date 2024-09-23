@@ -8,8 +8,8 @@ import { Button, Form, Input, Row, Alert, Card, Typography } from "antd";
 import type { FormProps } from "antd";
 
 type FieldType = {
-  login?: string;
-  password?: string;
+  login: string;
+  password: string;
 };
 const login = process.env.REACT_APP_LOGIN;
 const pass = process.env.REACT_APP_PASS;
@@ -28,19 +28,13 @@ export default function FormLogin() {
   };
 
   useEffect(() => {
-    return () => {
-      dispatch(clearState());
-      form.resetFields();
-    };
-  }, []);
-
-  useEffect(() => {
+    dispatch(clearState());
     if (isSuccess) {
       setTimeout(function () {
         navigate("/");
       }, 1000);
     }
-  }, [isError, isSuccess]);
+  }, [isSuccess, isError]);
 
   return (
     <Row justify="center" align="middle" style={{ minHeight: "100vh" }}>

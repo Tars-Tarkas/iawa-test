@@ -25,7 +25,6 @@ export const userLogin = createAsyncThunk(
       });
 
       const data = await res.json();
-
       if (res.status === 200) {
         localStorage.setItem("token", data.result.token);
         localStorage.setItem("userName", login);
@@ -34,7 +33,6 @@ export const userLogin = createAsyncThunk(
         return rejectWithValue(data);
       }
     } catch (error: any) {
-      console.log(error.error);
       return rejectWithValue(error.message);
     }
   }
