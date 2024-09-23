@@ -5,14 +5,7 @@
 #### Клонируем проект
 
 ```
-https://github.com/Tars-Tarkas/github_rest_api.git
-```
-
-#### Создаем в корне проекта файлы .env.local с параметрами
-
-```
-REACT_APP_BASE_URL = "https://api.github.com/"
-REACT_APP_PERSONAL_TOKEN = "ваш_персональный_токен"
+https://github.com/Tars-Tarkas/iawa-test.git
 ```
 
 #### Устанавливаем зависимости
