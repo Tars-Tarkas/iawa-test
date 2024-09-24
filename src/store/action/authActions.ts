@@ -1,11 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const logoutUser = () => () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("userName");
-  window.location.href = "/login";
-};
-
 export const userLogin = createAsyncThunk(
   "auth",
   async (
@@ -26,8 +20,7 @@ export const userLogin = createAsyncThunk(
 
       const data = await res.json();
       if (res.status === 200) {
-        localStorage.setItem("token", data.result.token);
-        localStorage.setItem("userName", login);
+        localStorage.setItem("userToken", data.result.token);
         return data;
       } else {
         return rejectWithValue(data);

@@ -1,24 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { userLogin } from "../action/authActions";
 
+const userToken = localStorage.getItem("userToken")
+  ? localStorage.getItem("userToken")
+  : null;
+
 const initialState = {
   isLoading: false,
   errorMessage: "",
   isError: false,
   isSuccess: false,
+  userToken,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    clearState: (state) => {
-      state.isSuccess = false;
-      state.isError = false;
-      state.errorMessage = "";
-      state.isLoading = false;
-      return state;
-    },
     logoutUser: (state) => {
       localStorage.removeItem("token");
       localStorage.removeItem("userName");
@@ -27,6 +25,7 @@ const authSlice = createSlice({
       state.isSuccess = false;
       state.isError = false;
       state.errorMessage = "";
+      state.userToken = "";
       return state;
     },
   },
@@ -38,18 +37,17 @@ const authSlice = createSlice({
     builder.addCase(userLogin.fulfilled, (state, { payload }) => {
       state.isLoading = false;
       state.isSuccess = true;
+      state.userToken = payload.result.token;
       return state;
     });
     builder.addCase(userLogin.rejected, (state, { payload }: any) => {
       state.isSuccess = false;
       state.isLoading = false;
-      localStorage.removeItem("token");
-      localStorage.removeItem("userName");
       state.errorMessage = payload.error.message;
       return state;
     });
   },
 });
 
-export const { clearState, logoutUser } = authSlice.actions;
+export const { logoutUser } = authSlice.actions;
 export default authSlice.reducer;

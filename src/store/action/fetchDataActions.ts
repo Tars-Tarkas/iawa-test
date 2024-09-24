@@ -16,7 +16,7 @@ export const fetchData = createAsyncThunk(
       itemsOnPage: number;
       names: string;
       email: string;
-      order_status: string;
+      order_status: number;
     },
     { rejectWithValue }
   ) => {

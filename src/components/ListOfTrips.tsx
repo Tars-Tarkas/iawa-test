@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../store";
 import { fetchData } from "../store/action/fetchDataActions";
 
-import { clearState } from "../store/slice/authSlice";
 import { useNavigate } from "react-router-dom";
 
 import CardTrips from "./CardTrips";
@@ -14,7 +13,7 @@ import FormSearch from "./FormSearch";
 type queryType = {
   queryName: string;
   queryEmail: string;
-  queryStatus: string;
+  queryStatus: number | null;
 };
 
 export default function ListOfTrips() {
@@ -24,39 +23,39 @@ export default function ListOfTrips() {
   const [query, setSquery] = useState<queryType>({
     queryName: "",
     queryEmail: "",
-    queryStatus: "",
+    queryStatus: null,
   });
 
   const [paginationModel, setPaginationModel] = useState({
     page: 1,
-    pageSize: 25,
+    pageSize: 11,
   });
+  const { userToken } = useSelector((state: RootState) => state.auth);
 
-  const { isError, isLoading, data, isSuccess } = useSelector(
+  const { isError, isLoading, data } = useSelector(
     (state: RootState) => state.fetch
   );
 
   useEffect(() => {
-    dispatch(clearState());
-    if (isError) {
-      navigate("/errorauth");
+    if (!userToken) {
+      navigate("/login");
     }
-  }, [isSuccess, isError]);
+  }, [userToken, dispatch]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (userToken) {
       dispatch(
         fetchData({
-          token: localStorage.getItem("token")!,
+          token: userToken,
           page: paginationModel.page,
           itemsOnPage: paginationModel.pageSize,
           names: query.queryName,
           email: query.queryEmail,
-          order_status: query.queryStatus,
+          order_status: query.queryStatus!,
         })
       );
     }
-  }, [paginationModel, query]);
+  }, [paginationModel, query, userToken, dispatch]);
 
   if (!data) {
     return null;

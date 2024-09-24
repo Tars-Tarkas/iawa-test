@@ -7,7 +7,7 @@ import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 type FieldType = {
   queryName: string;
   queryEmail: string;
-  queryStatus: string;
+  queryStatus: number;
 };
 
 const selectData = [
@@ -31,13 +31,13 @@ export default function FormSearch({ getValue }: PagePropsType) {
   const onFinish: FormProps<FieldType>["onFinish"] = ({
     queryName = "",
     queryEmail = "",
-    queryStatus = "",
+    queryStatus = 0,
   }) => {
     getValue({ queryName, queryEmail, queryStatus });
   };
 
   const onReset = () => {
-    getValue({ queryName: "", queryEmail: "", queryStatus: "" });
+    getValue({ queryName: "", queryEmail: "", queryStatus: 0 });
   };
   return (
     <Form

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { userLogin } from "../store/action/authActions";
-import { clearState } from "../store/slice/authSlice";
 import { RootState, AppDispatch } from "../store";
 import { Button, Form, Input, Row, Alert, Card, Typography } from "antd";
 import type { FormProps } from "antd";
@@ -28,7 +27,6 @@ export default function FormLogin() {
   };
 
   useEffect(() => {
-    dispatch(clearState());
     if (isSuccess) {
       setTimeout(function () {
         navigate("/");

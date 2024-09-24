@@ -13,18 +13,13 @@ type MenuItem = Required<MenuProps>["items"][number];
 export default function LayoutPage() {
   const { Title } = Typography;
   const dispatch = useDispatch<AppDispatch>();
-  const userName = localStorage.getItem("userName") as string;
+
   const onLogOut = () => {
     dispatch(logoutUser());
   };
   const items: MenuItem[] = [
     {
       key: "1",
-      icon: <UserOutlined />,
-      label: userName,
-    },
-    {
-      key: "2",
       icon: <LogoutOutlined />,
       label: "Выход",
       onClick: () => {

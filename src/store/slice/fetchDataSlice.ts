@@ -13,15 +13,7 @@ const initialState = {
 const fetchDataSlice = createSlice({
   name: "fetch",
   initialState,
-  reducers: {
-    clearState: (state) => {
-      state.isSuccess = false;
-      state.isError = false;
-      state.errorMessage = "";
-      state.isLoading = false;
-      return state;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchData.pending, (state, { payload }) => {
       state.isLoading = true;
@@ -42,5 +34,5 @@ const fetchDataSlice = createSlice({
     });
   },
 });
-export const { clearState } = fetchDataSlice.actions;
+
 export default fetchDataSlice.reducer;
