@@ -21,7 +21,7 @@ export default function TripDetails() {
   useEffect(() => {
     dispatch(
       fetchDataDetails({
-        token: localStorage.getItem("token")!,
+        token: localStorage.getItem("userToken")!,
         order_id: order_id!,
       })
     );

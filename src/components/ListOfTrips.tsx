@@ -32,9 +32,7 @@ export default function ListOfTrips() {
   });
   const { userToken } = useSelector((state: RootState) => state.auth);
 
-  const { isError, isLoading, data } = useSelector(
-    (state: RootState) => state.fetch
-  );
+  const { isLoading, data } = useSelector((state: RootState) => state.fetch);
 
   useEffect(() => {
     if (!userToken) {
@@ -43,7 +41,7 @@ export default function ListOfTrips() {
   }, [userToken, dispatch]);
 
   useEffect(() => {
-    if (userToken) {
+    if (userToken && query) {
       dispatch(
         fetchData({
           token: userToken,
@@ -62,11 +60,13 @@ export default function ListOfTrips() {
   }
   const { result } = data;
 
-  const onChangePagination = (page: number, pageSize: number) => {
-    setPaginationModel({ page: page, pageSize: pageSize });
+  const onChangePagination = (pageNum: number, pageSize: number) => {
+    pageNum !== paginationModel.page &&
+      setPaginationModel({ page: pageNum, pageSize: pageSize });
   };
 
   const queryValue = (value: queryType) => {
+    setPaginationModel({ ...paginationModel, page: 1 });
     setSquery({
       queryName: value.queryName,
       queryEmail: value.queryEmail,
@@ -87,6 +87,7 @@ export default function ListOfTrips() {
           </Flex>
           {!isLoading && (
             <Pagination
+              hideOnSinglePage
               defaultCurrent={1}
               style={{ padding: 30 }}
               align="center"
@@ -96,6 +97,7 @@ export default function ListOfTrips() {
               onChange={onChangePagination}
               responsive
               showLessItems
+              showTotal={(total) => `Количество: ${total}`}
               locale={{
                 items_per_page: "Страниц на листе",
                 next_page: "Следующая страница",

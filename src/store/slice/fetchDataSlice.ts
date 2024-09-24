@@ -29,7 +29,7 @@ const fetchDataSlice = createSlice({
       state.isSuccess = false;
       state.isError = true;
       state.isLoading = false;
-      state.errorMessage = payload.error.message;
+      // state.errorMessage = payload.error.message;
       return state;
     });
   },

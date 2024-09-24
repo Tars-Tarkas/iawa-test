@@ -67,12 +67,12 @@ export default function CardTrips({
           {passengers.map((item, index) => {
             return (
               <Descriptions
-                title="Пассажиры"
+                title="Пассажир"
+                key={index}
                 layout="vertical"
                 bordered
                 size="small"
                 style={{ textAlign: "center" }}
-                key={index}
               >
                 <Descriptions.Item label="Имя">{item.name}</Descriptions.Item>
                 <Descriptions.Item label="Email">
@@ -84,6 +84,7 @@ export default function CardTrips({
               </Descriptions>
             );
           })}
+
           {link && (
             <Divider orientation="right">
               <div style={{ textAlign: "right" }}>
