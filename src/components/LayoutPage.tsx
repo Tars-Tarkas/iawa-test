@@ -2,16 +2,16 @@ import React from "react";
 import { Outlet } from "react-router";
 import type { MenuProps } from "antd";
 import { logoutUser } from "../store/slice/authSlice";
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined } from "@ant-design/icons";
 import { Layout, Typography, Menu, theme } from "antd";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
+import FormSearch from "./FormSearch";
 const { Header, Sider, Content, Footer } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
 export default function LayoutPage() {
-  const { Title } = Typography;
   const dispatch = useDispatch<AppDispatch>();
 
   const onLogOut = () => {
@@ -30,10 +30,6 @@ export default function LayoutPage() {
 
   return (
     <Layout style={{ minHeight: "100%" }}>
-      <Sider breakpoint="xl" collapsedWidth="0">
-        <div className="demo-logo-vertical" />
-        <Menu selectable={false} theme="dark" mode="inline" items={items} />
-      </Sider>
       <Layout>
         <Header
           style={{
@@ -58,6 +54,23 @@ export default function LayoutPage() {
         </Content>
         <Footer style={{ textAlign: "center" }}></Footer>
       </Layout>
+      <Sider
+        width={320}
+        breakpoint="xl"
+        collapsedWidth={0}
+        reverseArrow
+        about=""
+        style={{ padding: 15 }}
+      >
+        <Menu
+          selectable={false}
+          theme="dark"
+          mode="inline"
+          items={items}
+          style={{ marginBottom: 50 }}
+        />
+        <FormSearch />
+      </Sider>
     </Layout>
   );
 }

@@ -19,7 +19,7 @@ function App() {
             errorElement={<PageNotFound />}
           />
           <Route
-            path="/:order_id"
+            path="/tripsdetails/:order_id"
             element={<TripDetails />}
             errorElement={<PageNotFound />}
           />

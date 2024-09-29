@@ -8,12 +8,25 @@ const initialState = {
   isError: false,
   errorMessage: "",
   data: {} as Root,
+  currentPage: 1,
+  currentItems_on_page: 11,
+  query: "",
 };
 
 const fetchDataSlice = createSlice({
   name: "fetch",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentPage: (state, { payload }) => {
+      state.currentPage = payload;
+    },
+    setItems_on_page: (state, { payload }) => {
+      state.currentItems_on_page = payload;
+    },
+    setQuery: (state, { payload }) => {
+      state.query = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchData.pending, (state, { payload }) => {
       state.isLoading = true;
@@ -24,15 +37,20 @@ const fetchDataSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
       state.isSuccess = true;
+      // state.currentPage = payload.result.page_data.page;
+      // state.currentItems_on_page = payload.result.items_on_page;
     });
     builder.addCase(fetchData.rejected, (state, { payload }: any) => {
       state.isSuccess = false;
       state.isError = true;
       state.isLoading = false;
-      // state.errorMessage = payload.error.message;
+      state.errorMessage = payload.error.message;
       return state;
     });
   },
 });
+
+export const { setCurrentPage, setItems_on_page, setQuery } =
+  fetchDataSlice.actions;
 
 export default fetchDataSlice.reducer;

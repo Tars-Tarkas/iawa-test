@@ -88,7 +88,10 @@ export default function CardTrips({
           {link && (
             <Divider orientation="right">
               <div style={{ textAlign: "right" }}>
-                <Link to={`/${order_id}`} style={{ textAlign: "right" }}>
+                <Link
+                  to={`/tripsdetails/${order_id}`}
+                  style={{ textAlign: "right" }}
+                >
                   Подробнее
                 </Link>
               </div>
