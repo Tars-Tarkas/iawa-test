@@ -1,7 +1,7 @@
 export interface Root {
   result: Result;
-  // error: any;
-  // "x-uuid": string;
+  error: any;
+  "x-uuid": string;
 }
 
 export interface Result {

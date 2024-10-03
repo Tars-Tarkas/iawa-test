@@ -1,23 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../store";
 import { fetchData } from "../store/action/fetchDataActions";
 import { useSearchParams } from "react-router-dom";
 import type { FormProps } from "antd";
 import { Form, Input, TreeSelect, Button, Space } from "antd";
-import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
-import {
-  setCurrentPage,
-  setItems_on_page,
-} from "../store/slice/fetchDataSlice";
+
 const { SHOW_PARENT } = TreeSelect;
 
 type QueryType = {
   names: string;
   email: string;
-  "order_status[]": string[];
-  page: number;
-  items_on_page: number;
+  order_status: string[];
 };
 
 const treeData = [
@@ -39,28 +33,22 @@ export default function FormSearch() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch<AppDispatch>();
-  const screens = useBreakpoint();
-  const [valuetreeselect, setValuetreeselect] = useState<string[]>([]);
-
+  const [valueTreeSelect, setValueTreeSelect] = useState<string[]>([]);
   const [query, setQuery] = useState<QueryType>({
-    names: searchParams.get("names") || "",
-    email: searchParams.get("email") || "",
-    "order_status[]": [],
-    page: Number(searchParams.get("page")) || 1,
-    items_on_page: Number(searchParams.get("items_on_page")) || 11,
+    names: "",
+    email: "",
+    order_status: [],
   });
 
   useEffect(() => {
-    setQuery({ ...query, names: searchParams.get("names") || "" });
-    setSearchParams((params) => {
-      params.set("page", query.page.toString());
-      params.set("items_on_page", query.items_on_page.toString());
-      return params;
+    setQuery({
+      ...query,
+      names: searchParams.get("names") || "",
+      email: searchParams.get("email") || "",
+      order_status: searchParams.getAll("order_status") || [],
     });
-    dispatch(setCurrentPage(query.page));
-    dispatch(setItems_on_page(query.items_on_page));
-  }, [searchParams, currentPage, currentItems_on_page]);
-
+  }, []);
+  
   useEffect(() => {
     if (!isLoading) {
       dispatch(
@@ -70,26 +58,27 @@ export default function FormSearch() {
         })
       );
     }
-  }, [searchParams, currentPage, currentItems_on_page]);
+  }, [searchParams]);
+
+  useEffect(() => {
+    setSearchParams({
+      page: currentPage.toString(),
+      items_on_page: currentItems_on_page.toString(),
+      names: query.names,
+      email: query.email,
+      "order_status[]": query.order_status,
+    });
+  }, [query, currentPage, currentItems_on_page]);
 
   const onFinish: FormProps<QueryType>["onFinish"] = ({
     names = "",
     email = "",
   }) => {
     setQuery({
-      page: currentPage,
-      items_on_page: currentItems_on_page,
+      ...query,
       names: names,
       email: email,
-      "order_status[]": valuetreeselect,
-    });
-
-    setSearchParams({
-      page: currentPage.toString(),
-      items_on_page: currentItems_on_page.toString(),
-      names: names,
-      email: email,
-      "order_status[]": query["order_status[]"],
+      order_status: valueTreeSelect,
     });
   };
 
@@ -98,7 +87,7 @@ export default function FormSearch() {
       ...query,
       names: "",
       email: "",
-      "order_status[]": [],
+      order_status: [],
     });
     setSearchParams();
     dispatch(
@@ -109,19 +98,27 @@ export default function FormSearch() {
   };
 
   const onChange = (newValue: string[]) => {
-    setValuetreeselect(newValue);
+    setValueTreeSelect(newValue);
+    if (newValue.length === 0) {
+      setQuery({ ...query, order_status: [] });
+    }
   };
 
   const tProps = {
     treeData,
-    valuetreeselect,
     onChange,
     treeCheckable: true,
     showCheckedStrategy: SHOW_PARENT,
   };
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.type === "click") {
+      setQuery({ ...query, names: "", email: "" });
+    }
+  };
 
   return (
     <Form
+      initialValues={query}
       name="formSearch"
       title="Поиск"
       style={{
@@ -148,7 +145,7 @@ export default function FormSearch() {
         layout="vertical"
         style={{ width: "100%", color: "#fff" }}
       >
-        <Input allowClear />
+        <Input allowClear onChange={onChangeInput} />
       </Form.Item>
 
       <Form.Item<QueryType>
@@ -156,18 +153,28 @@ export default function FormSearch() {
         label={<label style={{ color: "#fff" }}>Поиск по Email</label>}
         layout="vertical"
         style={{ width: "100%" }}
+        rules={[
+          {
+            type: "email",
+            message: "Введенный адрес электронной почты неверен!",
+          },
+        ]}
       >
-        <Input allowClear />
+        <Input allowClear onChange={onChangeInput} />
       </Form.Item>
 
       <Form.Item<QueryType>
-        name="order_status[]"
+        name="order_status"
         label={<label style={{ color: "#fff" }}>Поиск по статусу</label>}
         layout="vertical"
-        // style={{ textAlign: "left" }}
         style={{ width: "100%", color: "#fff" }}
       >
-        <TreeSelect {...tProps} placeholder={"Поиск по статусу"} allowClear />
+        <TreeSelect
+          {...tProps}
+          placeholder={"Поиск по статусу"}
+          allowClear
+          value={valueTreeSelect}
+        />
       </Form.Item>
       <Space.Compact
         direction="horizontal"

@@ -2,8 +2,8 @@ import React from "react";
 import { Outlet } from "react-router";
 import type { MenuProps } from "antd";
 import { logoutUser } from "../store/slice/authSlice";
-import { LogoutOutlined } from "@ant-design/icons";
-import { Layout, Typography, Menu, theme } from "antd";
+import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { Layout, Menu, Avatar } from "antd";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import FormSearch from "./FormSearch";
@@ -60,11 +60,13 @@ export default function LayoutPage() {
         collapsedWidth={0}
         reverseArrow
         about=""
-        style={{ padding: 15 }}
+        style={{ padding: 10 }}
       >
+        <Avatar size={100} icon={<UserOutlined />} />
+
         <Menu
           selectable={false}
-          theme="dark"
+          theme="light"
           mode="inline"
           items={items}
           style={{ marginBottom: 50 }}

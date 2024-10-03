@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 
 import CardTrips from "./CardTrips";
 import Spinner from "./Spinner";
-import FormSearch from "./FormSearch";
 
 export default function ListOfTrips() {
   const dispatch = useDispatch<AppDispatch>();
@@ -54,8 +53,7 @@ export default function ListOfTrips() {
       {isLoading && <Spinner />}
       {result?.orders ? (
         <>
-          {/* <FormSearch /> */}
-          <Flex wrap gap="large" justify="center" align="center">
+          <Flex wrap gap="large" justify="center" align="center" >
             {result?.orders?.map((item) => {
               return <CardTrips key={item.order_id} props={item} link />;
             })}

@@ -12,48 +12,55 @@ export default function CardTrips({
   props: Order;
   link: boolean;
 }) {
-  const { passengers, order_id, payable_status } = props;
+  const { passengers, order_id, status } = props;
   const screens = useBreakpoint();
 
-  let status = { text: "", color: "" };
-  switch (payable_status) {
+  let p_status = { text: "", color: "" };
+  switch (status) {
     case 0:
-      status.text = "Ожидание обработки";
-      status.color = "purple";
+      p_status.text = "Ожидание обработки";
+      p_status.color = "purple";
       break;
     case 1:
-      status.text = "Обработка";
-      status.color = "magenta";
+      p_status.text = "Обработка";
+      p_status.color = "magenta";
       break;
     case 2:
-      status.text = "Принято";
-      status.color = "green";
+      p_status.text = "Принято";
+      p_status.color = "green";
       break;
     case 3:
-      status.text = "Завершённый";
-      status.color = "volcano";
+      p_status.text = "Завершённый";
+      p_status.color = "volcano";
       break;
     case 4:
-      status.text = "Отменено без штрафа";
-      status.color = "red";
+      p_status.text = "Отменено без штрафа";
+      p_status.color = "red";
       break;
     case 5:
-      status.text = "Отменено со штрафом";
-      status.color = "red";
+      p_status.text = "Отменено со штрафом";
+      p_status.color = "red";
       break;
     case 6:
-      status.text = "Неоплаченный";
-      status.color = "red";
+      p_status.text = "Неоплаченный";
+      p_status.color = "red";
       break;
     case 7:
-      status.text = "Измененный";
-      status.color = "pink";
+      p_status.text = "Измененный";
+      p_status.color = "pink";
       break;
   }
 
   return (
-    <div style={{ maxWidth: screens.xl ? 480 : "100%", width: "100%" }}>
-      <Badge.Ribbon text={status.text} color={status.color}>
+    <div
+      style={{
+        maxWidth: screens.xl ? 640 : "100%",
+        width: "100%",
+        minHeight: "100%",
+        height: "100%",
+      }}
+    >
+      <Badge.Ribbon text={p_status.text} color={p_status.color}>
         <Card
           hoverable
           title={`ID поездки: ${order_id}`}
@@ -72,7 +79,7 @@ export default function CardTrips({
                 layout="vertical"
                 bordered
                 size="small"
-                style={{ textAlign: "center" }}
+                style={{ textAlign: "center", marginBottom: 10 }}
               >
                 <Descriptions.Item label="Имя">{item.name}</Descriptions.Item>
                 <Descriptions.Item label="Email">

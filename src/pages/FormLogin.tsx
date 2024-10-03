@@ -3,8 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { userLogin } from "../store/action/authActions";
 import { RootState, AppDispatch } from "../store";
-import { Button, Form, Input, Row, Alert, Card, Typography } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Row,
+  Alert,
+  Card,
+  Typography,
+  Avatar,
+} from "antd";
 import type { FormProps } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 type FieldType = {
   login: string;
@@ -38,8 +48,9 @@ export default function FormLogin() {
     <Row justify="center" align="middle" style={{ minHeight: "100vh" }}>
       <Card style={{ width: 500 }}>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <Title level={2}>Авторизация пользователя</Title>
+          <Title level={4}>Авторизация пользователя</Title>
         </div>
+
         <Form
           form={form}
           size="middle"
@@ -60,6 +71,9 @@ export default function FormLogin() {
           autoComplete="off"
           layout="vertical"
         >
+          <Form.Item>
+            <Avatar size={150} icon={<UserOutlined />} />
+          </Form.Item>
           <Form.Item<FieldType>
             name="login"
             rules={[
